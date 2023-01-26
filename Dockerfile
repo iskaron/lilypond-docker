@@ -2,16 +2,15 @@
 FROM debian:testing
 MAINTAINER Iskaron <mail@iskaron.de>
 
-ENV VERSION=2.22.1-1
+ENV VERSION=2.25.1
 
 RUN apt-get update && apt-get install -y wget bzip2 ghostscript openssh-client git && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /root
 
-ADD https://lilypond.org/download/binaries/linux-64/lilypond-${VERSION}.linux-64.sh ./
-RUN chmod +x lilypond-${VERSION}.linux-64.sh
-RUN ./lilypond-${VERSION}.linux-64.sh --batch --prefix /root/stable
-RUN rm lilypond-${VERSION}.linux-64.sh
+ADD https://gitlab.com/lilypond/lilypond/-/releases/v${VERSION}/downloads/lilypond-${VERSION}-linux-x86_64.tar.gz ./
+
+RUN tar xf ./lilypond-${VERSION}-linux-x86_64.tar.gz && mv lilypond-${VERSION} /root/stable && rm lilypond-${VERSION}-linux-x86_64.tar.gz
 
 COPY lilyfy.sh /root/stable/bin
 
